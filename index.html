@@ -11,7 +11,6 @@
     html { scroll-behavior: smooth; }
     body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 
-    /* Cards */
     .card {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
@@ -41,7 +40,16 @@
     }
 
     .nav-toggle { display: inline-flex; align-items:center; justify-content:center; transition: transform 0.3s ease; }
+
     header img { box-shadow: 0 6px 18px rgba(2,6,23,0.6); }
+
+    /* Mobile menu slide */
+    #mobileMenu {
+      transition: max-height 0.3s ease-in-out;
+      overflow: hidden;
+      max-height: 0;
+    }
+    #mobileMenu.open { max-height: 500px; }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100">
@@ -49,13 +57,13 @@
   <div id="scroll-progress" aria-hidden="true"></div>
 
   <!-- NAVBAR -->
-  <nav class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur border-b border-white/6">
+  <nav class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur border-b border-white/6">
     <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-4">
         <span class="font-semibold text-sm tracking-wide">Sakib</span>
       </div>
 
-      <!-- Desktop links -->
+      <!-- Desktop -->
       <div class="hidden md:flex gap-6 items-center text-sm text-slate-300">
         <a href="#about" class="nav-link">About</a>
         <a href="#projects" class="nav-link">Projects</a>
@@ -72,7 +80,7 @@
     </div>
 
     <!-- Mobile menu -->
-    <div id="mobileMenu" class="md:hidden hidden w-full bg-slate-950/95 backdrop-blur border-t border-white/5">
+    <div id="mobileMenu" class="md:hidden w-full bg-slate-950/95 backdrop-blur border-t border-white/5">
       <div class="px-4 py-4 flex flex-col gap-2 text-purple-400">
         <a href="#about" class="nav-link py-2 hover:text-purple-300">About</a>
         <a href="#projects" class="nav-link py-2 hover:text-purple-300">Projects</a>
@@ -128,7 +136,6 @@
           <a href="https://github.com/sakib-12345/HSC-study-webapp.git" class="underline">Code</a>
         </div>
       </div>
-      <!-- Add other projects here -->
     </div>
   </section>
 
@@ -140,34 +147,27 @@
         Email:
         <a href="mailto:sakibhossaintahmid@gmail.com" class="underline">sakibhossaintahmid@gmail.com</a>
       </p>
-      <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm text-slate-300">
-        <a href="https://github.com/sakib-12345" class="underline">GitHub</a>
-        <a href="https://www.facebook.com/sakibhossain.tahmid" class="underline">Facebook</a>
-        <a href="https://www.instagram.com/_sakib_000001" class="underline">Instagram</a>
-        <a href="https://x.com/_sakib_00000001" class="underline">X</a>
-      </div>
     </div>
     <p class="text-center text-slate-500 text-xs mt-4">© <span id="year"></span> Sakib Hossain Tahmid</p>
   </footer>
 
   <script>
-    // Year
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Mobile menu toggle
     const navToggle = document.getElementById('navToggle');
     const mobileMenu = document.getElementById('mobileMenu');
     const menuIcon = document.getElementById('menuIcon');
 
     navToggle.addEventListener('click', () => {
-      const open = mobileMenu.classList.toggle('hidden') === false;
-      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      menuIcon.style.transform = open ? 'rotate(90deg)' : 'rotate(0deg)';
+      mobileMenu.classList.toggle('open');
+      const isOpen = mobileMenu.classList.contains('open');
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      menuIcon.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)';
     });
 
     document.querySelectorAll('#mobileMenu .nav-link').forEach(a => {
       a.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('open');
         navToggle.setAttribute('aria-expanded', 'false');
         menuIcon.style.transform = 'rotate(0deg)';
       });
