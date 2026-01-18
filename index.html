@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sakib Hossain Tahmid | Portfolio</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
   <meta name="description" content="Sakib Hossain Tahmid — Undergraduate student interested in Python, Machine Learning, and Web Applications" />
 
@@ -12,6 +11,7 @@
     html { scroll-behavior: smooth; }
     body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 
+    /* Cards */
     .card {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
@@ -40,8 +40,7 @@
       transition: width 0.12s linear;
     }
 
-    .nav-toggle { display: inline-flex; gap: 6px; align-items:center; justify-content:center; transition: transform 0.3s ease; }
-
+    .nav-toggle { display: inline-flex; align-items:center; justify-content:center; transition: transform 0.3s ease; }
     header img { box-shadow: 0 6px 18px rgba(2,6,23,0.6); }
   </style>
 </head>
@@ -50,7 +49,7 @@
   <div id="scroll-progress" aria-hidden="true"></div>
 
   <!-- NAVBAR -->
-  <nav class="sticky top-0 z-50 relative bg-slate-950/80 backdrop-blur border-b border-white/6">
+  <nav class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur border-b border-white/6">
     <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-4">
         <span class="font-semibold text-sm tracking-wide">Sakib</span>
@@ -66,14 +65,14 @@
 
       <!-- Mobile toggle -->
       <div class="md:hidden">
-        <button id="navToggle" aria-expanded="false" aria-controls="mobileMenu" class="nav-toggle p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600">
+        <button id="navToggle" aria-expanded="false" class="nav-toggle p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600">
           <img id="menuIcon" src="YOUR_ICON.png" alt="Menu" class="h-6 w-6 transition-transform duration-300"/>
         </button>
       </div>
     </div>
 
     <!-- Mobile menu -->
-    <div id="mobileMenu" class="md:hidden hidden absolute top-full left-0 w-full bg-slate-950/95 backdrop-blur border-t border-white/5 z-50">
+    <div id="mobileMenu" class="md:hidden hidden w-full bg-slate-950/95 backdrop-blur border-t border-white/5">
       <div class="px-4 py-4 flex flex-col gap-2 text-purple-400">
         <a href="#about" class="nav-link py-2 hover:text-purple-300">About</a>
         <a href="#projects" class="nav-link py-2 hover:text-purple-300">Projects</a>
@@ -95,8 +94,8 @@
   </header>
 
   <!-- ABOUT -->
-  <section id="about" class="max-w-5xl mx-auto px-4 py-8">
-    <div class="card rounded-xl p-6 section-card reveal">
+  <section id="about" class="max-w-5xl mx-auto px-4 py-8 reveal">
+    <div class="card rounded-xl p-6 section-card">
       <h2 class="text-2xl font-semibold">About & Research Interests</h2>
       <p class="mt-3 text-slate-300 leading-relaxed">
         I am a higher secondary student preparing for undergraduate studies in Computer Science.
@@ -106,8 +105,56 @@
     </div>
   </section>
 
-  <!-- MOBILE MENU SCRIPT -->
+  <!-- EDUCATION -->
+  <section id="education" class="max-w-5xl mx-auto px-4 py-6 reveal">
+    <div class="card rounded-xl p-6 section-card">
+      <h2 class="text-xl font-semibold mb-4">Education</h2>
+      <ul class="space-y-3 text-slate-300">
+        <li><b>SSC</b> — Ideal School and College <span class="text-slate-400">(2024, GPA-5)</span></li>
+        <li><b>HSC</b> — Dhaka College <span class="text-slate-400">(Expected 2026)</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="max-w-5xl mx-auto px-4 py-8 reveal">
+    <h2 class="text-xl font-semibold mb-4">Projects</h2>
+    <div class="grid gap-6 sm:grid-cols-2">
+      <div class="card rounded-xl p-5 section-card">
+        <h3 class="font-semibold">HSC Study WebApp</h3>
+        <p class="text-sm text-slate-300 mt-2">A web application with HSC lessons and PDFs.</p>
+        <div class="mt-3 text-sm">
+          <a href="https://hsc-study-webapp.streamlit.app/" class="underline mr-4">Live</a>
+          <a href="https://github.com/sakib-12345/HSC-study-webapp.git" class="underline">Code</a>
+        </div>
+      </div>
+      <!-- Add other projects here -->
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <footer id="contact" class="max-w-5xl mx-auto px-4 py-8 reveal">
+    <div class="card rounded-xl p-6 text-center section-card">
+      <h2 class="text-lg font-semibold">Contact</h2>
+      <p class="text-slate-300 mt-2">
+        Email:
+        <a href="mailto:sakibhossaintahmid@gmail.com" class="underline">sakibhossaintahmid@gmail.com</a>
+      </p>
+      <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm text-slate-300">
+        <a href="https://github.com/sakib-12345" class="underline">GitHub</a>
+        <a href="https://www.facebook.com/sakibhossain.tahmid" class="underline">Facebook</a>
+        <a href="https://www.instagram.com/_sakib_000001" class="underline">Instagram</a>
+        <a href="https://x.com/_sakib_00000001" class="underline">X</a>
+      </div>
+    </div>
+    <p class="text-center text-slate-500 text-xs mt-4">© <span id="year"></span> Sakib Hossain Tahmid</p>
+  </footer>
+
   <script>
+    // Year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
     const navToggle = document.getElementById('navToggle');
     const mobileMenu = document.getElementById('mobileMenu');
     const menuIcon = document.getElementById('menuIcon');
@@ -115,8 +162,6 @@
     navToggle.addEventListener('click', () => {
       const open = mobileMenu.classList.toggle('hidden') === false;
       navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-
-      // Rotate PNG icon to indicate menu open
       menuIcon.style.transform = open ? 'rotate(90deg)' : 'rotate(0deg)';
     });
 
