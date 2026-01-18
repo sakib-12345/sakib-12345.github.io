@@ -9,22 +9,17 @@
 
   <style>
     html { scroll-behavior: smooth; }
-    body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
     .card {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
       border-left: 4px solid #8b5cf6;
-      transition: transform 0.22s cubic-bezier(.2,.9,.2,1), box-shadow 0.22s;
+      transition: transform 0.22s, box-shadow 0.22s;
     }
     .card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(2,6,23,0.6); }
 
     .section-card { position: relative; }
-
-    .glow {
-      box-shadow: 0 0 0 3px rgba(139,92,246,0.65), 0 0 36px rgba(124,58,237,0.45);
-      transition: box-shadow 0.35s ease;
-    }
 
     .reveal { opacity: 0; transform: translateY(10px); transition: opacity 0.45s ease, transform 0.45s ease; }
     .revealed { opacity: 1; transform: translateY(0); }
@@ -39,15 +34,12 @@
       transition: width 0.12s linear;
     }
 
-    .nav-toggle { display: inline-flex; align-items:center; justify-content:center; transition: transform 0.3s ease; }
+    .nav-toggle img { width: 28px; height: 28px; transition: transform 0.3s ease; }
 
-    header img { box-shadow: 0 6px 18px rgba(2,6,23,0.6); }
-
-    /* Mobile menu slide */
     #mobileMenu {
-      transition: max-height 0.3s ease-in-out;
       overflow: hidden;
       max-height: 0;
+      transition: max-height 0.3s ease;
     }
     #mobileMenu.open { max-height: 500px; }
   </style>
@@ -57,13 +49,13 @@
   <div id="scroll-progress" aria-hidden="true"></div>
 
   <!-- NAVBAR -->
-  <nav class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur border-b border-white/6">
+  <nav class="sticky top-0 z-50 bg-slate-950/95 backdrop-blur border-b border-white/5">
     <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-4">
         <span class="font-semibold text-sm tracking-wide">Sakib</span>
       </div>
 
-      <!-- Desktop -->
+      <!-- Desktop Links -->
       <div class="hidden md:flex gap-6 items-center text-sm text-slate-300">
         <a href="#about" class="nav-link">About</a>
         <a href="#projects" class="nav-link">Projects</a>
@@ -71,17 +63,17 @@
         <a href="#contact" class="nav-link">Contact</a>
       </div>
 
-      <!-- Mobile toggle -->
+      <!-- Mobile Toggle -->
       <div class="md:hidden">
-        <button id="navToggle" aria-expanded="false" class="nav-toggle p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600">
-          <img id="menuIcon" src="YOUR_ICON.png" alt="Menu" class="h-6 w-6 transition-transform duration-300"/>
+        <button id="navToggle" aria-expanded="false" class="nav-toggle focus:outline-none focus:ring-2 focus:ring-purple-600">
+          <img id="menuIcon" src="YOUR_ICON.png" alt="Menu" />
         </button>
       </div>
     </div>
 
-    <!-- Mobile menu -->
+    <!-- Mobile Menu -->
     <div id="mobileMenu" class="md:hidden w-full bg-slate-950/95 backdrop-blur border-t border-white/5">
-      <div class="px-4 py-4 flex flex-col gap-2 text-purple-400">
+      <div class="flex flex-col gap-2 px-4 py-4 text-purple-400">
         <a href="#about" class="nav-link py-2 hover:text-purple-300">About</a>
         <a href="#projects" class="nav-link py-2 hover:text-purple-300">Projects</a>
         <a href="#skills" class="nav-link py-2 hover:text-purple-300">Skills</a>
@@ -106,21 +98,8 @@
     <div class="card rounded-xl p-6 section-card">
       <h2 class="text-2xl font-semibold">About & Research Interests</h2>
       <p class="mt-3 text-slate-300 leading-relaxed">
-        I am a higher secondary student preparing for undergraduate studies in Computer Science.
-        My primary interests include Python programming, machine learning fundamentals, and developing
-        practical web applications using Streamlit and FastAPI.
+        Higher secondary student preparing for CS undergrad. Interests: Python, ML, Streamlit, FastAPI.
       </p>
-    </div>
-  </section>
-
-  <!-- EDUCATION -->
-  <section id="education" class="max-w-5xl mx-auto px-4 py-6 reveal">
-    <div class="card rounded-xl p-6 section-card">
-      <h2 class="text-xl font-semibold mb-4">Education</h2>
-      <ul class="space-y-3 text-slate-300">
-        <li><b>SSC</b> — Ideal School and College <span class="text-slate-400">(2024, GPA-5)</span></li>
-        <li><b>HSC</b> — Dhaka College <span class="text-slate-400">(Expected 2026)</span></li>
-      </ul>
     </div>
   </section>
 
@@ -130,7 +109,7 @@
     <div class="grid gap-6 sm:grid-cols-2">
       <div class="card rounded-xl p-5 section-card">
         <h3 class="font-semibold">HSC Study WebApp</h3>
-        <p class="text-sm text-slate-300 mt-2">A web application with HSC lessons and PDFs.</p>
+        <p class="text-sm text-slate-300 mt-2">Web app with HSC lessons & PDFs.</p>
         <div class="mt-3 text-sm">
           <a href="https://hsc-study-webapp.streamlit.app/" class="underline mr-4">Live</a>
           <a href="https://github.com/sakib-12345/HSC-study-webapp.git" class="underline">Code</a>
@@ -160,18 +139,26 @@
 
     navToggle.addEventListener('click', () => {
       mobileMenu.classList.toggle('open');
-      const isOpen = mobileMenu.classList.contains('open');
-      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      menuIcon.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)';
+      const open = mobileMenu.classList.contains('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menuIcon.style.transform = open ? 'rotate(90deg)' : 'rotate(0deg)';
     });
 
-    document.querySelectorAll('#mobileMenu .nav-link').forEach(a => {
-      a.addEventListener('click', () => {
+    document.querySelectorAll('#mobileMenu .nav-link').forEach(link => {
+      link.addEventListener('click', () => {
         mobileMenu.classList.remove('open');
         navToggle.setAttribute('aria-expanded', 'false');
         menuIcon.style.transform = 'rotate(0deg)';
       });
     });
+
+    // Reveal elements on scroll
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('revealed');
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   </script>
 
 </body>
