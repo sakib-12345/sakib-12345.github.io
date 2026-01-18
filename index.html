@@ -3,219 +3,326 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sakib Hossain Tahmid | Undergraduate Portfolio</title>
+  <title>Sakib Hossain Tahmid | Portfolio</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-
   <meta name="description" content="Sakib Hossain Tahmid — Undergraduate student interested in Python, Machine Learning, and Web Applications" />
 
   <style>
+    /* Basic */
+    html { scroll-behavior: smooth; }
+    body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
+    /* Cards */
     .card {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
+      border-left: 4px solid #8b5cf6;
+      transition: transform 0.22s cubic-bezier(.2,.9,.2,1), box-shadow 0.22s;
     }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(2,6,23,0.6); }
+
+    /* Section-card wrapper used for glow */
+    .section-card { position: relative; }
+
+    /* Glow state applied to the main card inside the section */
+    .glow {
+      box-shadow:
+        0 0 0 3px rgba(139,92,246,0.65),
+        0 0 36px rgba(124,58,237,0.45);
+      transition: box-shadow 0.35s ease;
+    }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(10px); transition: opacity 0.45s ease, transform 0.45s ease; }
+    .revealed { opacity: 1; transform: translateY(0); }
+
+    /* Navbar active link */
+    .nav-active { color: #a78bfa /* purple-300 */; font-weight: 600; position: relative; }
+    .nav-active::after { content:""; position:absolute; left:50%; transform:translateX(-50%); bottom:-8px; width:40%; height:3px; background:linear-gradient(90deg,#a78bfa,#7c3aed); border-radius:2px; }
+
+    /* Progress bar */
+    #scroll-progress {
+      position: fixed; left: 0; top: 0; height: 3px; z-index: 60;
+      background: linear-gradient(90deg,#a78bfa,#7c3aed);
+      width: 0%;
+      transition: width 0.12s linear;
+    }
+
+    /* Mobile nav button */
+    .nav-toggle { display: inline-flex; gap: 6px; align-items:center; justify-content:center; }
+
+    /* Small visual polish */
+    header img { box-shadow: 0 6px 18px rgba(2,6,23,0.6); }
   </style>
 </head>
 
 <body class="bg-slate-950 text-slate-100">
 
-<!-- HEADER -->
-<header class="max-w-5xl mx-auto px-4 py-6">
-  <div class="flex items-center gap-4">
-    <img src="https://avatars.githubusercontent.com/u/226893736?v=4"
-         class="w-12 h-12 rounded-full object-cover" />
-    <div>
-      <h1 class="text-lg font-semibold">Sakib Hossain Tahmid</h1>
-      <p class="text-sm text-slate-400">
-        Higher Secondary Student • Aspiring CS Undergraduate
-      </p>
-    </div>
-  </div>
-</header>
+  <!-- Scroll progress -->
+  <div id="scroll-progress" aria-hidden="true"></div>
 
-<!-- INTRO -->
-<section class="max-w-5xl mx-auto px-4 py-8">
-  <div class="card rounded-xl p-6">
-    <h2 class="text-2xl font-semibold">About Me</h2>
-    <p class="mt-3 text-slate-300 leading-relaxed">
-      I am a higher secondary student preparing for undergraduate studies in
-      Computer Science. My primary interests include Python programming,
-      machine learning fundamentals, and developing simple yet practical
-      web applications using Streamlit and FastAPI.
-    </p>
-  </div>
-</section>
-<!-- RESEARCH & LEARNING -->
-<section class="max-w-5xl mx-auto px-4 py-8">
-  <div class="card rounded-xl p-6">
-    <h2 class="text-xl font-semibold mb-4">Research & Learning Interests</h2>
+  <!-- NAVBAR -->
+  <nav class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur border-b border-white/6">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <span class="font-semibold text-sm tracking-wide">Sakib<span class="text-purple-400"></span></span>
+      </div>
 
-    <p class="text-slate-300 text-sm leading-relaxed">
-      I am currently focused on building a strong foundation in computer science
-      through self-learning, experimentation, and small-scale projects.
-      My learning approach emphasizes understanding core concepts rather than
-      using black-box tools.
-    </p>
+      <!-- Desktop links -->
+      <div class="hidden md:flex gap-6 items-center text-sm text-slate-300">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
 
-    <ul class="mt-4 space-y-3 text-slate-300 text-sm">
-      <li>
-        <b>Machine Learning Fundamentals:</b>
-        Studying supervised learning algorithms, model evaluation techniques,
-        and feature engineering using scikit-learn.
-      </li>
-
-      <li>
-        <b>Data Analysis & Visualization:</b>
-        Exploring real-world datasets using pandas, NumPy, and Matplotlib to
-        understand data patterns and insights.
-      </li>
-
-      <li>
-        <b>Applied AI Experiments:</b>
-        Learning how machine learning models behave in practical applications
-        by building small experimental web apps.
-      </li>
-
-      <li>
-        <b>Backend & System Thinking:</b>
-        Understanding how APIs, databases, and authentication work using
-        FastAPI, Firebase, and Google Sheets as lightweight backends.
-      </li>
-
-      <li>
-        <b>Future Academic Goals:</b>
-        Interested in undergraduate research opportunities in machine learning,
-        data science, and applied artificial intelligence.
-      </li>
-    </ul>
-  </div>
-</section>
-
-<!-- EDUCATION -->
-<section class="max-w-5xl mx-auto px-4 py-6">
-  <div class="card rounded-xl p-6">
-    <h2 class="text-xl font-semibold mb-4">Education</h2>
-    <ul class="space-y-3 text-slate-300">
-      <li>
-        <b>SSC</b> — Ideal School and College  
-        <span class="text-slate-400">(2024, GPA-5 out of 5)</span>
-      </li>
-      <li>
-        <b>HSC</b> — Dhaka College  
-        <span class="text-slate-400">(Expected 2026)</span>
-      </li>
-    </ul>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section class="max-w-5xl mx-auto px-4 py-8">
-  <h2 class="text-xl font-semibold mb-4">Academic & Personal Projects</h2>
-
-  <div class="grid gap-6 sm:grid-cols-2">
-
-    <div class="card rounded-xl p-5">
-      <h3 class="font-semibold">HSC Study WebApp</h3>
-      <p class="text-sm text-slate-300 mt-2">
-        A web application that provides free HSC video lessons and PDFs in an
-        organized, distraction-free environment for students.
-      </p>
-      <div class="mt-3 text-sm">
-        <a href="https://hsc-study-webapp.streamlit.app/" class="underline mr-4">Live</a>
-        <a href="https://github.com/sakib-12345/HSC-study-webapp.git" class="underline">Code</a>
+      <!-- Mobile toggle -->
+      <div class="md:hidden">
+        <button id="navToggle" aria-expanded="false" aria-controls="mobileMenu" class="nav-toggle p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600">
+          <svg id="iconOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 6h14M3 10h14M3 14h14" clip-rule="evenodd"/></svg>
+          <svg id="iconClose" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293 15.707 15.707M15.707 4.293 4.293 15.707" clip-rule="evenodd"/></svg>
+        </button>
       </div>
     </div>
 
-    <div class="card rounded-xl p-5">
-      <h3 class="font-semibold">No-Code Machine Learning Builder</h3>
-      <p class="text-sm text-slate-300 mt-2">
-        Allows users to build and evaluate machine learning models by uploading
-        datasets, without writing code.
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="md:hidden hidden border-t border-white/5">
+      <div class="px-4 py-3 flex flex-col gap-2 text-slate-300">
+        <a href="#about" class="nav-link py-2">About</a>
+        <a href="#projects" class="nav-link py-2">Projects</a>
+        <a href="#skills" class="nav-link py-2">Skills</a>
+        <a href="#contact" class="nav-link py-2">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="max-w-5xl mx-auto px-4 py-6">
+    <div class="flex items-center gap-4">
+      <img src="https://avatars.githubusercontent.com/u/226893736?v=4" class="w-12 h-12 rounded-full object-cover" alt="Sakib"/>
+      <div>
+        <h1 class="text-lg font-semibold">Sakib Hossain Tahmid</h1>
+        <p class="text-sm text-slate-400">Higher Secondary Student • Aspiring CS Undergraduate</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT (merged About + Research) -->
+  <section id="about" class="max-w-5xl mx-auto px-4 py-8">
+    <div class="card rounded-xl p-6 section-card reveal">
+      <h2 class="text-2xl font-semibold">About & Research Interests</h2>
+      <p class="mt-3 text-slate-300 leading-relaxed">
+        I am a higher secondary student preparing for undergraduate studies in Computer Science.
+        My primary interests include Python programming, machine learning fundamentals, and developing
+        practical web applications using Streamlit and FastAPI. I focus on strong fundamentals, experimentation,
+        and system-level understanding rather than black-box shortcuts.
       </p>
-      <div class="mt-3 text-sm">
-        <a href="https://nocodemlsakib.streamlit.app/" class="underline mr-4">Live</a>
-        <a href="https://github.com/sakib-12345/No-Code-ML-WEBapp" class="underline">Code</a>
+
+      <h3 class="mt-4 font-semibold">Research & Learning</h3>
+      <ul class="mt-2 space-y-2 text-slate-300 text-sm">
+        <li><b>Machine Learning Fundamentals:</b> supervised algorithms, model evaluation, feature engineering using scikit-learn.</li>
+        <li><b>Data Analysis & Visualization:</b> exploring datasets with pandas, NumPy, and Matplotlib.</li>
+        <li><b>Applied AI Experiments:</b> small web apps to test model behaviour in practice.</li>
+        <li><b>Backend & Systems:</b> APIs, databases, and authentication with FastAPI, Firebase, and Google Sheets.</li>
+        <li><b>Future Goals:</b> undergraduate research in ML, data science, and applied AI.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="max-w-5xl mx-auto px-4 py-6 reveal">
+    <div class="card rounded-xl p-6 section-card">
+      <h2 class="text-xl font-semibold mb-4">Education</h2>
+      <ul class="space-y-3 text-slate-300">
+        <li><b>SSC</b> — Ideal School and College <span class="text-slate-400">(2024, GPA-5 out of 5)</span></li>
+        <li><b>HSC</b> — Dhaka College <span class="text-slate-400">(Expected 2026)</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="max-w-5xl mx-auto px-4 py-8">
+    <h2 class="text-xl font-semibold mb-4">Academic & Personal Projects</h2>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      <div class="card rounded-xl p-5 reveal section-card">
+        <h3 class="font-semibold">HSC Study WebApp</h3>
+        <p class="text-sm text-slate-300 mt-2">A web application that provides free HSC video lessons and PDFs in an organized, distraction-free environment for students.</p>
+        <div class="mt-3 text-sm">
+          <a href="https://hsc-study-webapp.streamlit.app/" class="underline mr-4">Live</a>
+          <a href="https://github.com/sakib-12345/HSC-study-webapp.git" class="underline">Code</a>
+        </div>
+      </div>
+
+      <div class="card rounded-xl p-5 reveal section-card">
+        <h3 class="font-semibold">No-Code Machine Learning Builder</h3>
+        <p class="text-sm text-slate-300 mt-2">Allows users to build and evaluate machine learning models by uploading datasets, without writing code.</p>
+        <div class="mt-3 text-sm">
+          <a href="https://nocodemlsakib.streamlit.app/" class="underline mr-4">Live</a>
+          <a href="https://github.com/sakib-12345/No-Code-ML-WEBapp" class="underline">Code</a>
+        </div>
+      </div>
+
+      <div class="card rounded-xl p-5 reveal section-card">
+        <h3 class="font-semibold">ML Classifier Comparison Tool</h3>
+        <p class="text-sm text-slate-300 mt-2">Compares multiple binary classification algorithms using a user-provided CSV file.</p>
+        <div class="mt-3 text-sm">
+          <a href="https://ml-app-sakib.streamlit.app/" class="underline mr-4">Live</a>
+          <a href="https://github.com/sakib-12345/ML-comperision-WEBapp" class="underline">Code</a>
+        </div>
+      </div>
+
+      <div class="card rounded-xl p-5 reveal section-card">
+        <h3 class="font-semibold">Chat Application (Firebase)</h3>
+        <p class="text-sm text-slate-300 mt-2">A real-time chat application using Firebase as a backend database.</p>
+        <div class="mt-3 text-sm">
+          <a href="https://chat-firebase.streamlit.app/" class="underline mr-4">Live</a>
+          <a href="https://github.com/sakib-12345/chat-app-with-Firebase" class="underline">Code</a>
+        </div>
+      </div>
+
+      <div class="card rounded-xl p-5 sm:col-span-2 reveal section-card">
+        <h3 class="font-semibold">Chat Application (Google Sheets)</h3>
+        <p class="text-sm text-slate-300 mt-2">A lightweight chat system using Google Sheets as a backend, designed for free and simple deployment.</p>
+        <div class="mt-3 text-sm">
+          <a href="https://chat-app-sakib12345.streamlit.app/" class="underline mr-4">Live</a>
+          <a href="https://github.com/sakib-12345/chat-app-with-google-sheet.git" class="underline">Code</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="max-w-5xl mx-auto px-4 py-8 reveal">
+    <div class="card rounded-xl p-6 section-card">
+      <h2 class="text-xl font-semibold mb-4">Technical Skills</h2>
+      <ul class="text-slate-300 space-y-2 text-sm">
+        <li><b>Programming:</b> Python, HTML, C, SQLite</li>
+        <li><b>Machine Learning:</b> NumPy, Pandas, Matplotlib, Scikit-learn, OpenCV</li>
+        <li><b>Web Development:</b> Streamlit, FastAPI, Flask</li>
+        <li><b>Databases:</b> Firebase, Google Sheets</li>
+        <li><b>Tools:</b> Git, VS Code, Jupyter Notebook, Linux</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <footer id="contact" class="max-w-5xl mx-auto px-4 py-8 reveal">
+    <div class="card rounded-xl p-6 text-center section-card">
+      <h2 class="text-lg font-semibold">Contact</h2>
+      <p class="text-slate-300 mt-2">
+        Email:
+        <a href="mailto:sakibhossaintahmid@gmail.com" class="underline">sakibhossaintahmid@gmail.com</a>
+      </p>
+
+      <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm text-slate-300">
+        <a href="https://github.com/sakib-12345" class="underline">GitHub</a>
+        <a href="https://www.facebook.com/sakibhossain.tahmid" class="underline">Facebook</a>
+        <a href="https://www.instagram.com/_sakib_000001" class="underline">Instagram</a>
+        <a href="https://x.com/_sakib_00000001" class="underline">X</a>
       </div>
     </div>
 
-    <div class="card rounded-xl p-5">
-      <h3 class="font-semibold">ML Classifier Comparison Tool</h3>
-      <p class="text-sm text-slate-300 mt-2">
-        Compares multiple binary classification algorithms using a user-provided CSV file.
-      </p>
-      <div class="mt-3 text-sm">
-        <a href="https://ml-app-sakib.streamlit.app/" class="underline mr-4">Live</a>
-        <a href="https://github.com/sakib-12345/ML-comperision-WEBapp" class="underline">Code</a>
-      </div>
-    </div>
+    <p class="text-center text-slate-500 text-xs mt-4">© <span id="year"></span> Sakib Hossain Tahmid</p>
+  </footer>
 
-    <div class="card rounded-xl p-5">
-      <h3 class="font-semibold">Chat Application (Firebase)</h3>
-      <p class="text-sm text-slate-300 mt-2">
-        A real-time chat application using Firebase as a backend database.
-      </p>
-      <div class="mt-3 text-sm">
-        <a href="https://chat-firebase.streamlit.app/" class="underline mr-4">Live</a>
-        <a href="https://github.com/sakib-12345/chat-app-with-Firebase" class="underline">Code</a>
-      </div>
-    </div>
+  <script>
+    // Year
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-    <div class="card rounded-xl p-5 sm:col-span-2">
-      <h3 class="font-semibold">Chat Application (Google Sheets)</h3>
-      <p class="text-sm text-slate-300 mt-2">
-        A lightweight chat system using Google Sheets as a backend, designed
-        for free and simple deployment.
-      </p>
-      <div class="mt-3 text-sm">
-        <a href="https://chat-app-sakib12345.streamlit.app/" class="underline mr-4">Live</a>
-        <a href="https://github.com/sakib-12345/chat-app-with-google-sheet.git" class="underline">Code</a>
-      </div>
-    </div>
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const iconOpen = document.getElementById('iconOpen');
+    const iconClose = document.getElementById('iconClose');
 
-  </div>
-</section>
+    navToggle.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('hidden') === false;
+      navToggle.setAttribute('aria-expanded', open);
+      iconOpen.classList.toggle('hidden', open);
+      iconClose.classList.toggle('hidden', !open);
+    });
 
-<!-- SKILLS -->
-<section class="max-w-5xl mx-auto px-4 py-8">
-  <div class="card rounded-xl p-6">
-    <h2 class="text-xl font-semibold mb-4">Technical Skills</h2>
-    <ul class="text-slate-300 space-y-2 text-sm">
-      <li><b>Programming:</b> Python, HTML, C, SQLite</li>
-      <li><b>Machine Learning:</b> NumPy, Pandas, Matplotlib, Scikit-learn, OpenCV</li>
-      <li><b>Web Development:</b> Streamlit, FastAPI, Flask</li>
-      <li><b>Databases:</b> Firebase, Google Sheets</li>
-      <li><b>Tools:</b> Git, VS Code, Jupyter Notebook, Linux</li>
-    </ul>
-  </div>
-</section>
+    // Close mobile menu when a nav link is clicked
+    document.querySelectorAll('#mobileMenu .nav-link').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+        navToggle.setAttribute('aria-expanded', false);
+      });
+    });
 
-<!-- CONTACT -->
-<footer class="max-w-5xl mx-auto px-4 py-8">
-  <div class="card rounded-xl p-6 text-center">
-    <h2 class="text-lg font-semibold">Contact</h2>
-    <p class="text-slate-300 mt-2">
-      Email:
-      <a href="mailto:sakibhossaintahmid@gmail.com" class="underline">
-        sakibhossaintahmid@gmail.com
-      </a>
-    </p>
+    // Glow on nav click
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (ev) => {
+        const href = link.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        const target = document.querySelector(href);
+        if (!target) return;
 
-    <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm text-slate-300">
-      <a href="https://github.com/sakib-12345" class="underline">GitHub</a>
-      <a href="https://www.facebook.com/sakibhossain.tahmid" class="underline">Facebook</a>
-      <a href="https://www.instagram.com/_sakib_000001" class="underline">Instagram</a>
-      <a href="https://x.com/_sakib_00000001" class="underline">X</a>
-    </div>
-  </div>
+        // find the primary .section-card inside the target (prefer first .section-card or .card)
+        const card = target.querySelector('.section-card') || target.querySelector('.card');
+        if (!card) return;
 
-  <p class="text-center text-slate-500 text-xs mt-4">
-    © <span id="year"></span> Sakib Hossain Tahmid
-  </p>
-</footer>
+        // remove any existing glow and re-add to retrigger
+        card.classList.remove('glow');
+        void card.offsetWidth;
+        card.classList.add('glow');
+        setTimeout(() => card.classList.remove('glow'), 1200);
+      });
+    });
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+    // Active nav link while scrolling using IntersectionObserver
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const id = entry.target.getAttribute('id');
+        const link = Array.from(navLinks).find(a => a.getAttribute('href') === '#' + id);
+        if (!link) return;
+        if (entry.isIntersecting) {
+          navLinks.forEach(n => n.classList.remove('nav-active'));
+          link.classList.add('nav-active');
+
+          // optional: subtle glow when section becomes active via scrolling (first time)
+          const card = entry.target.querySelector('.section-card') || entry.target.querySelector('.card');
+          if (card && !card.dataset.hasGlow) {
+            card.dataset.hasGlow = "1";
+            card.classList.add('glow');
+            setTimeout(() => card.classList.remove('glow'), 900);
+          }
+        }
+      });
+    }, { root: null, threshold: 0.48 }); // trigger when ~48% visible
+
+    sections.forEach(s => sectionObserver.observe(s));
+
+    // Reveal on scroll for elements with .reveal
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Scroll progress
+    const progress = document.getElementById('scroll-progress');
+    const docHeight = () => document.documentElement.scrollHeight - window.innerHeight;
+    const updateProgress = () => {
+      const pct = (window.scrollY / Math.max(1, docHeight())) * 100;
+      progress.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    updateProgress(); // init
+  </script>
 
 </body>
 </html>
