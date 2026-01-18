@@ -196,38 +196,93 @@ header img { box-shadow:0 6px 18px rgba(2,6,23,0.6);}
 document.getElementById("year").textContent = new Date().getFullYear();
 
 // Mobile toggle
-const navToggle=document.getElementById('navToggle');
-const mobileMenu=document.getElementById('mobileMenu');
-const menuIcon=document.getElementById('menuIcon');
-navToggle.addEventListener('click',()=>{
-  const open=mobileMenu.classList.toggle('hidden')===false;
-  navToggle.setAttribute('aria-expanded',open);
-  menuIcon.style.transform=open?'rotate(90deg)':'rotate(0deg)';
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+const menuIcon = document.getElementById('menuIcon');
+
+navToggle.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('hidden') === false;
+  navToggle.setAttribute('aria-expanded', open);
+  menuIcon.style.transform = open ? 'rotate(90deg)' : 'rotate(0deg)';
 });
-document.querySelectorAll('#mobileMenu .nav-link').forEach(a=>{
-  a.addEventListener('click',()=>{
+
+// Close mobile menu on link click
+document.querySelectorAll('#mobileMenu .nav-link').forEach(a => {
+  a.addEventListener('click', () => {
     mobileMenu.classList.add('hidden');
-    menuIcon.style.transform='rotate(0deg)';
-    navToggle.setAttribute('aria-expanded',false);
+    menuIcon.style.transform = 'rotate(0deg)';
+    navToggle.setAttribute('aria-expanded', false);
   });
 });
+
+// Glow on nav link click
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    const href = link.getAttribute('href');
+    if (!href || !href.startsWith('#')) return;
+    const target = document.querySelector(href);
+    if (!target) return;
+    const card = target.querySelector('.section-card') || target.querySelector('.card');
+    if (!card) return;
+
+    card.classList.remove('glow'); // reset
+    void card.offsetWidth; // trigger reflow
+    card.classList.add('glow');
+    setTimeout(() => card.classList.remove('glow'), 1200);
+  });
+});
+
+// Glow on scroll via IntersectionObserver
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const id = entry.target.getAttribute('id');
+    const link = Array.from(navLinks).find(a => a.getAttribute('href') === '#' + id);
+    if (!link) return;
+
+    if (entry.isIntersecting) {
+      navLinks.forEach(n => n.classList.remove('nav-active'));
+      link.classList.add('nav-active');
+
+      // subtle glow first time
+      const card = entry.target.querySelector('.section-card') || entry.target.querySelector('.card');
+      if (card && !card.dataset.hasGlow) {
+        card.dataset.hasGlow = "1";
+        card.classList.add('glow');
+        setTimeout(() => card.classList.remove('glow'), 900);
+      }
+    }
+  });
+}, { root: null, threshold: 0.48 });
+
+sections.forEach(s => sectionObserver.observe(s));
 
 // Scroll reveal
-const revealObserver=new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){entry.target.classList.add('revealed');revealObserver.unobserve(entry.target);}
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      revealObserver.unobserve(entry.target);
+    }
   });
-},{threshold:0.15});
-document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 // Scroll progress
-const progress=document.getElementById('scroll-progress');
-const docHeight=()=>document.documentElement.scrollHeight-window.innerHeight;
-const updateProgress=()=>{progress.style.width=Math.min(100,Math.max(0,(window.scrollY/docHeight())*100))+'%';};
-window.addEventListener('scroll',updateProgress,{passive:true});
-window.addEventListener('resize',updateProgress);
+const progress = document.getElementById('scroll-progress');
+const docHeight = () => document.documentElement.scrollHeight - window.innerHeight;
+const updateProgress = () => {
+  progress.style.width = Math.min(100, Math.max(0, (window.scrollY / docHeight()) * 100)) + '%';
+};
+window.addEventListener('scroll', updateProgress, { passive: true });
+window.addEventListener('resize', updateProgress);
 updateProgress();
 </script>
+
 </body>
 </html>
+
 
