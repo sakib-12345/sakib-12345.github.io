@@ -86,15 +86,19 @@
       </div>
     </div>
 
-<!-- Mobile menu -->
-<div id="mobileMenu" class="md:hidden hidden absolute top-full left-0 w-full bg-slate-950/95 backdrop-blur border-t border-white/5 z-50">
-  <div class="px-4 py-4 flex flex-col gap-2 text-purple-400">
-    <a href="#about" class="nav-link py-2 hover:text-purple-300">About</a>
-    <a href="#projects" class="nav-link py-2 hover:text-purple-300">Projects</a>
-    <a href="#skills" class="nav-link py-2 hover:text-purple-300">Skills</a>
-    <a href="#contact" class="nav-link py-2 hover:text-purple-300">Contact</a>
-  </div>
+<!-- Mobile toggle -->
+<div class="md:hidden">
+  <button id="navToggle" aria-expanded="false" aria-controls="mobileMenu"
+    class="nav-toggle p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 text-purple-400">
+    <svg id="iconOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M3 6h14M3 10h14M3 14h14" clip-rule="evenodd"/>
+    </svg>
+    <svg id="iconClose" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M4.293 4.293 15.707 15.707M15.707 4.293 4.293 15.707" clip-rule="evenodd"/>
+    </svg>
+  </button>
 </div>
+
 
   </nav>
 
@@ -319,4 +323,5 @@
 
 </body>
 </html>
+
 
