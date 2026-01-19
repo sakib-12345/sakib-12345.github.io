@@ -267,105 +267,238 @@ header img { box-shadow:0 6px 18px rgba(2,6,23,0.6);}
   <p class="text-center text-slate-500 text-xs mt-4">© <span id="year"></span> Sakib Hossain Tahmid. All rights reserved.</p>
 </footer>
 
+<!-- CHATBOT -->
+<div id="chatbot" class="fixed bottom-5 right-5 z-50">
+  <button id="chatToggle"
+    class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full shadow-lg text-sm">
+    Ask about me
+  </button>
+
+  <div id="chatBox"
+    class="hidden mt-3 w-80 bg-slate-900 border border-white/10 rounded-xl shadow-xl overflow-hidden">
+    
+    <div class="p-3 border-b border-white/10 text-sm font-semibold text-purple-400">
+      Assistant
+    </div>
+
+    <div id="chatMessages"
+      class="p-3 h-56 overflow-y-auto text-sm text-slate-300 space-y-2">
+      <div class="text-slate-400">
+        Answers are limited here.For proper answer, contact me via social links.
+      </div>
+    </div>
+
+    <div class="p-3 border-t border-white/10 flex gap-2">
+      <input id="chatInput"
+        type="text"
+        placeholder="Type a question..."
+        class="flex-1 bg-slate-800 text-slate-200 text-sm px-3 py-2 rounded-md focus:outline-none" />
+      <button id="chatSend"
+        class="bg-purple-600 hover:bg-purple-700 px-3 py-2 rounded-md text-sm">
+        Send
+      </button>
+    </div>
+  </div>
+</div>
+
+    
+
 <script>
-  // Year
-  document.getElementById("year").textContent = new Date().getFullYear();
+/* =======================
+   BASIC SETUP
+======================= */
 
-  // Mobile nav toggle
-  const navToggle = document.getElementById('navToggle');
-  const mobileMenu = document.getElementById('mobileMenu');
-  const menuIcon = document.getElementById('menuIcon');
+// Year
+document.getElementById("year").textContent = new Date().getFullYear();
 
-  navToggle.addEventListener('click', () => {
-    const open = mobileMenu.classList.toggle('hidden') === false;
-    navToggle.setAttribute('aria-expanded', open);
+/* =======================
+   MOBILE NAV
+======================= */
+const navToggle = document.getElementById("navToggle");
+const mobileMenu = document.getElementById("mobileMenu");
+const menuIcon = document.getElementById("menuIcon");
 
-    // simple rotate animation for PNG
-    menuIcon.style.transform = open ? 'rotate(90deg)' : 'rotate(0deg)';
+navToggle.addEventListener("click", () => {
+  const isOpen = !mobileMenu.classList.contains("hidden");
+  mobileMenu.classList.toggle("hidden");
+  navToggle.setAttribute("aria-expanded", !isOpen);
+  menuIcon.style.transform = !isOpen ? "rotate(90deg)" : "rotate(0deg)";
+});
+
+document.querySelectorAll("#mobileMenu .nav-link").forEach(link => {
+  link.addEventListener("click", () => {
+    mobileMenu.classList.add("hidden");
+    menuIcon.style.transform = "rotate(0deg)";
+    navToggle.setAttribute("aria-expanded", false);
   });
+});
 
-  // Close mobile menu when a nav link is clicked
-  document.querySelectorAll('#mobileMenu .nav-link').forEach(a => {
-    a.addEventListener('click', () => {
-      mobileMenu.classList.add('hidden');
-      menuIcon.style.transform = 'rotate(0deg)';
-      navToggle.setAttribute('aria-expanded', false);
-    });
+/* =======================
+   NAV GLOW + ACTIVE LINK
+======================= */
+document.querySelectorAll(".nav-link").forEach(link => {
+  link.addEventListener("click", () => {
+    const target = document.querySelector(link.getAttribute("href"));
+    if (!target) return;
+
+    const card = target.querySelector(".section-card") || target.querySelector(".card");
+    if (!card) return;
+
+    card.classList.remove("glow");
+    void card.offsetWidth;
+    card.classList.add("glow");
+    setTimeout(() => card.classList.remove("glow"), 1200);
   });
+});
 
-  // Glow on nav click
-  document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-      const href = link.getAttribute('href');
-      if (!href || !href.startsWith('#')) return;
-      const target = document.querySelector(href);
-      if (!target) return;
+const sections = document.querySelectorAll("section[id]");
+const navLinks = document.querySelectorAll(".nav-link");
 
-      const card = target.querySelector('.section-card') || target.querySelector('.card');
-      if (!card) return;
+const sectionObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
 
-      // remove any existing glow and re-add to retrigger
-      card.classList.remove('glow');
-      void card.offsetWidth;
-      card.classList.add('glow');
-      setTimeout(() => card.classList.remove('glow'), 1200);
-    });
+    navLinks.forEach(n => n.classList.remove("nav-active"));
+    const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+    if (active) active.classList.add("nav-active");
   });
+}, { threshold: 0.48 });
 
-  // Active nav link while scrolling using IntersectionObserver
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
+sections.forEach(sec => sectionObserver.observe(sec));
 
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const id = entry.target.getAttribute('id');
-      const link = Array.from(navLinks).find(a => a.getAttribute('href') === '#' + id);
-      if (!link) return;
+/* =======================
+   REVEAL ON SCROLL
+======================= */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("revealed");
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
 
-      if (entry.isIntersecting) {
-        navLinks.forEach(n => n.classList.remove('nav-active'));
-        link.classList.add('nav-active');
+document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
 
-        // subtle glow first time when scrolling
-        const card = entry.target.querySelector('.section-card') || entry.target.querySelector('.card');
-        if (card && !card.dataset.hasGlow) {
-          card.dataset.hasGlow = "1";
-          card.classList.add('glow');
-          setTimeout(() => card.classList.remove('glow'), 900);
-        }
-      }
-    });
-  }, { root: null, threshold: 0.48 });
+/* =======================
+   SCROLL PROGRESS BAR
+======================= */
+const progress = document.getElementById("scroll-progress");
 
-  sections.forEach(s => sectionObserver.observe(s));
+function updateProgress() {
+  const height = document.documentElement.scrollHeight - window.innerHeight;
+  const scrolled = (window.scrollY / Math.max(1, height)) * 100;
+  progress.style.width = Math.min(100, scrolled) + "%";
+}
 
-  // Reveal on scroll
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
+window.addEventListener("scroll", updateProgress, { passive: true });
+window.addEventListener("resize", updateProgress);
+updateProgress();
 
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+/* =======================
+   CHATBOT LOGIC (LIMITED)
+======================= */
 
-  // Scroll progress
-  const progress = document.getElementById('scroll-progress');
-  const docHeight = () => document.documentElement.scrollHeight - window.innerHeight;
-  const updateProgress = () => {
-    const pct = (window.scrollY / Math.max(1, docHeight())) * 100;
-    progress.style.width = Math.min(100, Math.max(0, pct)) + '%';
-  };
-  window.addEventListener('scroll', updateProgress, { passive: true });
-  window.addEventListener('resize', updateProgress);
-  updateProgress(); // init
+const chatToggle = document.getElementById("chatToggle");
+const chatBox = document.getElementById("chatBox");
+const chatSend = document.getElementById("chatSend");
+const chatInput = document.getElementById("chatInput");
+const chatMessages = document.getElementById("chatMessages");
+
+chatToggle.onclick = () => {
+  chatBox.classList.toggle("hidden");
+};
+
+/* =======================
+   ACCURATE PORTFOLIO Q&A
+======================= */
+
+const QA = {
+  about: `
+Sakib Hossain Tahmid is a Higher Secondary student preparing for undergraduate study in Computer Science.
+He focuses on building strong fundamentals through self-learning, experimentation, and small-scale projects,
+with particular interest in machine learning and backend systems.
+`,
+
+  learning: `
+Sakib is currently learning machine learning fundamentals, data analysis, and backend development.
+His learning includes supervised learning algorithms, feature engineering, data visualization using
+NumPy, Pandas, and Matplotlib, and building experimental applications to understand real-world behavior of models.
+`,
+
+  education: `
+Sakib completed SSC from Ideal School and College in 2024 with GPA 5.
+He is currently studying at Dhaka College and is expected to complete HSC in 2026.
+`,
+
+  skills: `
+Sakib’s technical skills include Python, HTML, C, and SQLite.
+He works with machine learning tools such as NumPy, Pandas, Matplotlib, scikit-learn, and OpenCV,
+and uses Streamlit, FastAPI, and Flask for building web applications.
+`,
+
+  projects: `
+Sakib has built several practical projects including:
+1) HSC Study WebApp for free video lessons and PDFs,
+2) A No-Code Machine Learning Model Builder,
+3) A Machine Learning Classifier Comparison WebApp,
+4) Chat applications using Firebase and Google Sheets as backends.
+`,
+
+  contact: `
+You can contact Sakib via email at sakibhossaintahmid@gmail.com
+or through the social media links provided in the Contact section of this website.
+`
+};
+
+function getAnswer(text) {
+  const input = text.toLowerCase().trim();
+
+  if (input.includes("who") || input.includes("about") || input.includes("sakib"))
+    return QA.about;
+
+  if (input.includes("learn") || input.includes("learning") || input.includes("research"))
+    return QA.learning;
+
+  if (input.includes("education") || input.includes("school") || input.includes("college") || input.includes("ssc") || input.includes("hsc"))
+    return QA.education;
+
+  if (input.includes("skill") || input.includes("technology") || input.includes("stack"))
+    return QA.skills;
+
+  if (input.includes("project") || input.includes("work") || input.includes("built"))
+    return QA.projects;
+
+  if (input.includes("contact") || input.includes("email") || input.includes("reach"))
+    return QA.contact;
+
+  return "I can only answer questions related to this portfolio website.";
+}
+
+
+chatSend.onclick = () => {
+  const text = chatInput.value.trim();
+  if (!text) return;
+
+  chatMessages.innerHTML += `<div><b>You:</b> ${text}</div>`;
+  chatInput.value = "";
+
+  const reply = getAnswer(text);
+  chatMessages.innerHTML += `<div class="text-purple-400"><b>Sakib: </b> ${reply}</div>`;
+
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+};
+
+chatInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") chatSend.click();
+});
 </script>
+
 
 
 </body>
 </html>
+
 
 
 
