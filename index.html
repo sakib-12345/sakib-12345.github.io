@@ -484,7 +484,7 @@ chatSend.onclick = () => {
   chatInput.value = "";
 
   const reply = getAnswer(text);
-  chatMessages.innerHTML += `<div class="text-purple-400"><b>Sakib: </b> ${reply}</div>`;
+  chatMessages.innerHTML += `<div class="text-purple-400"><b>Bot: </b> ${reply}</div>`;
 
   chatMessages.scrollTop = chatMessages.scrollHeight;
 };
@@ -498,6 +498,7 @@ chatInput.addEventListener("keydown", e => {
 
 </body>
 </html>
+
 
 
 
