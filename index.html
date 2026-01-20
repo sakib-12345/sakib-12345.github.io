@@ -448,12 +448,18 @@ Sakib has built several practical projects including:
   contact: `
 You can contact Sakib via email at sakibhossaintahmid@gmail.com
 or through the social media links provided in the Contact section of this website.
+`,
+    hello:`
+Hello, i am Sakib's chat assistant. You can ask me anything about him.
 `
 };
 
 function getAnswer(text) {
   const input = text.toLowerCase().trim();
 
+  if (input.includes("hello") || input.includes("hi") || input.includes("hey"))
+    return QA.hello;
+    
   if (input.includes("who") || input.includes("about") || input.includes("sakib"))
     return QA.about;
 
@@ -498,6 +504,7 @@ chatInput.addEventListener("keydown", e => {
 
 </body>
 </html>
+
 
 
 
