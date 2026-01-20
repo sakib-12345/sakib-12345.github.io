@@ -412,73 +412,110 @@ chatToggle.onclick = () => {
 /* =======================
    ACCURATE PORTFOLIO Q&A
 ======================= */
-
 const QA = {
-  about: `
+  about: {
+    answer: `
 Sakib Hossain Tahmid is a Higher Secondary student preparing for undergraduate study in Computer Science.
 He focuses on building strong fundamentals through self-learning, experimentation, and small-scale projects,
 with particular interest in machine learning and backend systems.
 `,
+    keywords: [
+      "who", "about", "sakib", "profile", "person", "student", "background", "intro", "introduction"
+    ]
+  },
 
-  learning: `
+  learning: {
+    answer: `
 Sakib is currently learning machine learning fundamentals, data analysis, and backend development.
 His learning includes supervised learning algorithms, feature engineering, data visualization using
 NumPy, Pandas, and Matplotlib, and building experimental applications to understand real-world behavior of models.
 `,
+    keywords: [
+      "learn", "learning", "study", "studying", "research", "ml", "machine learning", "ai",
+      "backend", "data science", "current focus"
+    ]
+  },
 
-  education: `
+  education: {
+    answer: `
 Sakib completed SSC from Ideal School and College in 2024 with GPA 5.
 He is currently studying at Dhaka College and is expected to complete HSC in 2026.
 `,
+    keywords: [
+      "education", "school", "college", "ssc", "hsc", "gpa", "academic",
+      "exam", "institution", "dhaka college", "ideal school"
+    ]
+  },
 
-  skills: `
+  skills: {
+    answer: `
 Sakib’s technical skills include Python, HTML, C, and SQLite.
 He works with machine learning tools such as NumPy, Pandas, Matplotlib, scikit-learn, and OpenCV,
 and uses Streamlit, FastAPI, and Flask for building web applications.
 `,
+    keywords: [
+      "skill", "skills", "technology", "tech", "stack", "tools",
+      "python", "ml tools", "framework", "languages"
+    ]
+  },
 
-  projects: `
+  projects: {
+    answer: `
 Sakib has built several practical projects including:
 1) HSC Study WebApp for free video lessons and PDFs,
 2) A No-Code Machine Learning Model Builder,
 3) A Machine Learning Classifier Comparison WebApp,
 4) Chat applications using Firebase and Google Sheets as backends.
 `,
+    keywords: [
+      "project", "projects", "work", "built", "portfolio",
+      "apps", "application", "webapp", "system"
+    ]
+  },
 
-  contact: `
+  contact: {
+    answer: `
 You can contact Sakib via email at sakibhossaintahmid@gmail.com
 or through the social media links provided in the Contact section of this website.
 `,
-    hello:`
-Hello, i am Sakib's chat assistant. You can ask me anything about him.
-`
+    keywords: [
+      "contact", "email", "reach", "message", "connect",
+      "mail", "social", "linkedin", "github"
+    ]
+  },
+
+  hello: {
+    answer: `Hello, I’m Sakib’s chat assistant. Ask me anything about him.`,
+    keywords: ["hello", "hi", "hey", "yo", "sup"]
+  }
 };
 
 function getAnswer(text) {
-  const input = text.toLowerCase().trim();
+  const input = text.toLowerCase().replace(/[^\w\s]/g, "");
 
-  if (input.includes("hello") || input.includes("hi") || input.includes("hey"))
-    return QA.hello;
-    
-  if (input.includes("who") || input.includes("about") || input.includes("sakib"))
-    return QA.about;
+  let bestMatch = null;
+  let highestScore = 0;
 
-  if (input.includes("learn") || input.includes("learning") || input.includes("research"))
-    return QA.learning;
+  for (const key in QA) {
+    let score = 0;
 
-  if (input.includes("education") || input.includes("school") || input.includes("college") || input.includes("ssc") || input.includes("hsc"))
-    return QA.education;
+    QA[key].keywords.forEach(keyword => {
+      if (input.includes(keyword)) {
+        score++;
+      }
+    });
 
-  if (input.includes("skill") || input.includes("technology") || input.includes("stack"))
-    return QA.skills;
+    if (score > highestScore) {
+      highestScore = score;
+      bestMatch = key;
+    }
+  }
 
-  if (input.includes("project") || input.includes("work") || input.includes("built"))
-    return QA.projects;
+  if (bestMatch && highestScore > 0) {
+    return QA[bestMatch].answer;
+  }
 
-  if (input.includes("contact") || input.includes("email") || input.includes("reach"))
-    return QA.contact;
-
-  return "I can only answer questions related to this portfolio website.";
+  return "I’m limited to Sakib’s portfolio info. Try asking about his education, skills, projects, learning journey, or contact details.";
 }
 
 
@@ -504,6 +541,7 @@ chatInput.addEventListener("keydown", e => {
 
 </body>
 </html>
+
 
 
 
